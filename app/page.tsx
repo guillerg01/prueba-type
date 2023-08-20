@@ -19,7 +19,7 @@ export default function Home() {
   const [cookies, setCookie] = useCookies(["lectura"]);
 
   useEffect(() => {
-    const URL = "http://localhost:3001/library";
+    const URL = "http:/152.206.208.69:3001/library";
     const respuesta = axios.get(URL).then((res) => {
       setLibros(res.data);
       setCantidad(res.data.length);
@@ -27,6 +27,7 @@ export default function Home() {
       setLibrostotal(res.data);
       setLectura(cookies.lectura);
     });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   arreglarcat();
@@ -53,6 +54,7 @@ export default function Home() {
     lectura.length !== 0 &&
       setCookie("lectura", JSON.stringify(lectura), { path: "/" });
     console.log(cookies.lectura);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lectura]);
 
   useEffect(() => {
