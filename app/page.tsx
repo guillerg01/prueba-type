@@ -19,7 +19,7 @@ export default function Home() {
   const [cookies, setCookie] = useCookies(["lectura"]);
 
   useEffect(() => {
-    const URL = "https://raw.githubusercontent.com/midudev/pruebas-tecnicas/main/pruebas/01-reading-list/books.json";
+    const URL = "http://localhost:3001/library";
     const respuesta = axios.get(URL).then((res) => {
       setLibros(res.data);
       setCantidad(res.data.length);
