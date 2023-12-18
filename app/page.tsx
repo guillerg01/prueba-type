@@ -7,25 +7,57 @@ import { Select, Option } from "@material-tailwind/react";
 import { useCookies } from "react-cookie";
 import React, { ChangeEvent } from 'react';
 
+
+
+interface Author {
+  name: string;
+  otherBooks: string[];
+}
+
+interface Book {
+  title: string;
+  pages: number;
+  genre: string;
+  cover: string;
+  synopsis: string;
+  year: number;
+  ISBN: string;
+  author: Author;
+}
+
+interface LibraryItem {
+  book: Book;
+}
+
+interface Library {
+  library: LibraryItem[];
+}
+
+
+
+
 export default function Home() {
-  const [libros, setLibros] = useState<Object[]>([]);
-  const [librostotal, setLibrostotal] = useState<Object[]>([]);
+  const [libros, setLibros] = useState<LibraryItem[]>([]);
+  const [librostotal, setLibrostotal] = useState<LibraryItem[]>([]);
   const [cantidad, setCantidad] = useState<number>(0);
-  const [lectura, setLectura] = useState<Object[]>([]);
-  const [generos, setGeneros] = useState<Object[]>(["Ninguno"]);
+  const [lectura, setLectura] = useState<LibraryItem[]>([]);
+  const [generos, setGeneros] = useState<any>(["Ninguno"]);
   const [cantPaginas, setCantPaginas] = useState(0);
   const [cantidadLectura, setCantidadLectura] = useState<number>(0);
 
   const [cookies, setCookie] = useCookies(["lectura"]);
 
   useEffect(() => {
-    const URL = "http://localhost:3001/library";
+    const URL = "https://raw.githubusercontent.com/midudev/pruebas-tecnicas/main/pruebas/01-reading-list/books.json";
     const respuesta = axios.get(URL).then((res) => {
-      setLibros(res.data);
-      setCantidad(res.data.length);
-      console.log(res.data);
-      setLibrostotal(res.data);
+      setLibros(res.data.library);
+      setCantidad(res.data.library.length);
+      console.log(res.data.library);
+      setLibrostotal(res.data.library);
+      if(cookies.lectura){
       setLectura(cookies.lectura);
+      }else{setLectura([])}
+      
     });
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -36,7 +68,7 @@ export default function Home() {
     libros.map((l:any) => {
       let yaesta = false;
 
-      generos.map((gen) => {
+      generos.map((gen:any) => {
         if (gen === l.book.genre) {
           yaesta = true;
         }
@@ -162,7 +194,7 @@ export default function Home() {
                     <Image
                       key={i}
                       onClick={() => {
-                        let arrnew = lectura.filter((l) => {
+                        let arrnew = lectura.filter((l:any) => {
                           return l !== lectura[i];
                         });
                         setLectura(arrnew);
